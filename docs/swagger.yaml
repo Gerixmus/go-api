@@ -5,5 +5,20 @@ info:
   description: This is a sample Gin API with Swagger documentation.
   title: My Gin API
   version: "1.0"
-paths: {}
+paths:
+  /albums:
+    get:
+      consumes:
+      - application/json
+      description: Get all the albums
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Albums
+      tags:
+      - Albums
 swagger: "2.0"

@@ -70,6 +70,13 @@ func main() {
 }
 
 // getAlbums responds with the list of all albums as JSON.
+// @Summary Albums
+// @Description Get all the albums
+// @Tags Albums
+// @Accept json
+// @Produce json
+// @Success 200 {string} string "OK"
+// @Router /albums [get]
 func getAlbums(c *gin.Context) {
 	var albums []album
 
