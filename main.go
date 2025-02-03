@@ -7,9 +7,13 @@ import (
 	"net/http"
 	"os"
 
+	_ "go-api/docs"
+
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func init() {
@@ -28,6 +32,11 @@ type album struct {
 
 var db *sql.DB
 
+// @title My Gin API
+// @version 1.0
+// @description This is a sample Gin API with Swagger documentation.
+// @host localhost:8080
+// @BasePath /
 func main() {
 	var err error
 	dbHost := os.Getenv("DB_HOST")
@@ -56,6 +65,7 @@ func main() {
 	router.GET("/albums/:id", getAlbumByID)
 	router.POST("/albums", postAlbums)
 
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	router.Run("localhost:8080")
 }
 
