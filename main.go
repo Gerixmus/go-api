@@ -24,6 +24,8 @@ func init() {
 }
 
 // album represents data about a record album.
+// @Description Album represents data about a record album.
+// @Description Note: This is a sample struct for demonstration purposes.
 type album struct {
 	Title  string  `json:"title"`
 	Artist string  `json:"artist"`
@@ -102,6 +104,15 @@ func getAlbums(c *gin.Context) {
 }
 
 // postAlbums adds an album from JSON received in the request body.
+// @Summary Add a new album
+// @Description Add a new album to the list
+// @Tags Albums
+// @Accept json
+// @Produce json
+// @Param album body album true "Album to add"
+// @Success 201 {object} album "Album added"
+// @Failure 400 {string} string "Bad Request"
+// @Router /albums [post]
 func postAlbums(c *gin.Context) {
 	var newAlbum album
 
@@ -129,8 +140,16 @@ func postAlbums(c *gin.Context) {
 	c.IndentedJSON(http.StatusCreated, newAlbum)
 }
 
-// getAlbumByID locates the album whose ID value matches the id
-// parameter sent by the client, then returns that album as a response.
+// getAlbumByID locates and returns an album as a response.
+// @Summary Get an album by ID
+// @Description Get an album by its ID
+// @Tags Albums
+// @Accept json
+// @Produce json
+// @Param id path string true "Album ID"
+// @Success 200 {object} album "OK"
+// @Failure 404 {string} string "Not Found"
+// @Router /albums/{id} [get]
 func getAlbumByID(c *gin.Context) {
 	id := c.Param("id")
 
