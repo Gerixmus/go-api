@@ -1,0 +1,86 @@
+basePath: /
+definitions:
+  main.album:
+    description: 'Album represents data about a record album. Note: This is a sample
+      struct for demonstration purposes.'
+    properties:
+      artist:
+        type: string
+      price:
+        type: number
+      title:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a sample Gin API with Swagger documentation.
+  title: My Gin API
+  version: "1.0"
+paths:
+  /albums:
+    get:
+      consumes:
+      - application/json
+      description: Get all the albums
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Albums
+      tags:
+      - Albums
+    post:
+      consumes:
+      - application/json
+      description: Add a new album to the list
+      parameters:
+      - description: Album to add
+        in: body
+        name: album
+        required: true
+        schema:
+          $ref: '#/definitions/main.album'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Album added
+          schema:
+            $ref: '#/definitions/main.album'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: Add a new album
+      tags:
+      - Albums
+  /albums/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get an album by its ID
+      parameters:
+      - description: Album ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.album'
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: Get an album by ID
+      tags:
+      - Albums
+swagger: "2.0"
