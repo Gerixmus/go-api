@@ -68,7 +68,7 @@ func main() {
 	router.POST("/albums", postAlbums)
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	router.Run("localhost:8080")
+	router.Run("0.0.0.0:8080")
 }
 
 // getAlbums responds with the list of all albums as JSON.
