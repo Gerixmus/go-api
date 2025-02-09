@@ -1,6 +1,8 @@
 package main
 
 import (
+	"crypto/tls"
+	"crypto/x509"
 	"database/sql"
 	"fmt"
 	"log"
@@ -10,7 +12,7 @@ import (
 	_ "go-api/docs"
 
 	"github.com/gin-gonic/gin"
-	_ "github.com/go-sql-driver/mysql"
+	"github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -48,6 +50,23 @@ func main() {
 	dbPassword := os.Getenv("DB_PASSWORD")
 
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", dbUser, dbPassword, dbHost, dbPort, dbName)
+
+	if dbCert, ok := os.LookupEnv("DB_CERT"); ok {
+		pool := x509.NewCertPool()
+		pem, err := os.ReadFile(dbCert)
+		if err != nil {
+			return
+		}
+		if ok := pool.AppendCertsFromPEM(pem); !ok {
+			return
+		}
+		mysql.RegisterTLSConfig("config", &tls.Config{
+			RootCAs:            pool,
+			InsecureSkipVerify: true,
+		})
+		dsn += "?tls=config"
+	}
+
 	// Connect to the MySQL database
 	db, err = sql.Open("mysql", dsn)
 	if err != nil {
@@ -68,7 +87,7 @@ func main() {
 	router.POST("/albums", postAlbums)
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	router.Run("localhost:8080")
+	router.Run("0.0.0.0:8080")
 }
 
 // getAlbums responds with the list of all albums as JSON.
