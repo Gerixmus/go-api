@@ -5,8 +5,8 @@ import (
 	"log"
 	"net/http"
 
-	"go-api/cmd/database"
 	_ "go-api/docs"
+	"go-api/internal/database"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
