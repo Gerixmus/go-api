@@ -1,4 +1,4 @@
-module github.com/Gerixmus/go-api
+module github.com/gerixmus/go-api
 
 go 1.23.5
 

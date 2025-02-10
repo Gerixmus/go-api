@@ -5,9 +5,9 @@ import (
 	"log"
 	"net/http"
 
-	_ "github.com/Gerixmus/go-api/docs"
+	_ "github.com/gerixmus/go-api/docs"
 
-	"github.com/Gerixmus/go-api/database"
+	"github.com/gerixmus/go-api/database"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	swaggerFiles "github.com/swaggo/files"
