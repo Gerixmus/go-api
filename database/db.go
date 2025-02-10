@@ -8,7 +8,7 @@ import (
 	"log"
 	"os"
 
-	_ "go-api/docs"
+	_ "github.com/Gerixmus/go-api/docs"
 
 	"github.com/go-sql-driver/mysql"
 )
