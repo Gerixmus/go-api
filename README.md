@@ -1,0 +1,1 @@
+[![Build](https://github.com/Gerixmus/go-api/actions/workflows/go.yml/badge.svg)](https://github.com/Gerixmus/go-api/actions/workflows/go.yml)

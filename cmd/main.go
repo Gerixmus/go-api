@@ -1,18 +1,14 @@
 package main
 
 import (
-	"crypto/tls"
-	"crypto/x509"
 	"database/sql"
-	"fmt"
 	"log"
 	"net/http"
-	"os"
 
-	_ "go-api/docs"
+	_ "github.com/Gerixmus/go-api/docs"
 
+	"github.com/Gerixmus/go-api/database"
 	"github.com/gin-gonic/gin"
-	"github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -43,41 +39,10 @@ var db *sql.DB
 // @BasePath /
 func main() {
 	var err error
-	dbHost := os.Getenv("DB_HOST")
-	dbPort := os.Getenv("DB_PORT")
-	dbName := os.Getenv("DB_NAME")
-	dbUser := os.Getenv("DB_USER")
-	dbPassword := os.Getenv("DB_PASSWORD")
 
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", dbUser, dbPassword, dbHost, dbPort, dbName)
-
-	if dbCert, ok := os.LookupEnv("DB_CERT"); ok {
-		pool := x509.NewCertPool()
-		pem, err := os.ReadFile(dbCert)
-		if err != nil {
-			return
-		}
-		if ok := pool.AppendCertsFromPEM(pem); !ok {
-			return
-		}
-		mysql.RegisterTLSConfig("config", &tls.Config{
-			RootCAs:            pool,
-			InsecureSkipVerify: true,
-		})
-		dsn += "?tls=config"
-	}
-
-	// Connect to the MySQL database
-	db, err = sql.Open("mysql", dsn)
+	db, err = database.Connect()
 	if err != nil {
-		panic(err.Error())
-	}
-	defer db.Close()
-
-	// Ensure the connection is available
-	err = db.Ping()
-	if err != nil {
-		panic(err.Error())
+		log.Fatalf("Failed to connect to database: %v", err)
 	}
 
 	// Initialize the Gin router
