@@ -8,6 +8,7 @@ import (
 	_ "github.com/gerixmus/go-api/docs"
 
 	"github.com/gerixmus/go-api/database"
+	"github.com/gerixmus/go-api/models"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	swaggerFiles "github.com/swaggo/files"
@@ -19,15 +20,6 @@ func init() {
 	if err := godotenv.Load(); err != nil {
 		log.Println("No .env file found, relying on environment variables")
 	}
-}
-
-// album represents data about a record album.
-// @Description Album represents data about a record album.
-// @Description Note: This is a sample struct for demonstration purposes.
-type album struct {
-	Title  string  `json:"title"`
-	Artist string  `json:"artist"`
-	Price  float64 `json:"price"`
 }
 
 var db *sql.DB
@@ -64,7 +56,7 @@ func main() {
 // @Success 200 {string} string "OK"
 // @Router /albums [get]
 func getAlbums(c *gin.Context) {
-	var albums []album
+	var albums []models.Album
 
 	// Query the database
 	rows, err := db.Query("SELECT title, artist, price FROM albums")
@@ -76,7 +68,7 @@ func getAlbums(c *gin.Context) {
 
 	// Iterate over the rows and populate the albums slice
 	for rows.Next() {
-		var a album
+		var a models.Album
 		if err := rows.Scan(&a.Title, &a.Artist, &a.Price); err != nil {
 			c.IndentedJSON(http.StatusInternalServerError, gin.H{"message": "error scanning rows"})
 			return
@@ -98,7 +90,7 @@ func getAlbums(c *gin.Context) {
 // @Failure 400 {string} string "Bad Request"
 // @Router /albums [post]
 func postAlbums(c *gin.Context) {
-	var newAlbum album
+	var newAlbum models.Album
 
 	// Bind the received JSON to newAlbum
 	if err := c.BindJSON(&newAlbum); err != nil {
@@ -137,7 +129,7 @@ func postAlbums(c *gin.Context) {
 func getAlbumByID(c *gin.Context) {
 	id := c.Param("id")
 
-	var a album
+	var a models.Album
 
 	// Query the database for the album with the specified ID
 	row := db.QueryRow("SELECT title, artist, price FROM albums WHERE id = ?", id)
