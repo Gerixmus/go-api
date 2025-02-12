@@ -16,7 +16,7 @@ RUN apk --no-cache add ca-certificates
 WORKDIR /app/cmd
 
 COPY --from=builder app/cmd/go-api .
-COPY /certs/ca.pem /certs/ca.pem
+COPY [/certs/ca.pem] /certs/ca.pem
 
 EXPOSE 8080
 
