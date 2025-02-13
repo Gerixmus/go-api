@@ -9,8 +9,6 @@ import (
 	"github.com/gerixmus/go-api/database"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func init() {
@@ -30,7 +28,5 @@ func main() {
 	// Initialize the Gin router
 	router := gin.Default()
 	api.SetupRoutes(router)
-
-	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	router.Run("0.0.0.0:8080")
 }
